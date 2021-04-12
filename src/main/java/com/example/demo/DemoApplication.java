@@ -21,17 +21,6 @@ public class DemoApplication {
 
         SpringApplication.run(DemoApplication.class, args);
     }
-
-    @Bean
-    ApplicationRunner applicationRunner(GreetingRepository greetingRepository, FriendRepository friendRepository){
-        return args -> {
-            greetingRepository.save(new Greeting("Hello"));
-            greetingRepository.save(new Greeting("Hi"));
-            friendRepository.save(new Friends("Axel Jeansson", "Valsgärdevägen 10", "0707677207"));
-            friendRepository.save(new Friends("Oscar Jeansson", "Drabantgatan 4C", "0707871773"));
-        };
-    }
-
 }
 
 @RestController
