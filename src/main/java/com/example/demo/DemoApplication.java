@@ -24,10 +24,12 @@ public class DemoApplication {
     }
 
     @Bean
-    ApplicationRunner applicationRunner(GreetingRepository greetingRepository){
+    ApplicationRunner applicationRunner(GreetingRepository greetingRepository, FriendRepository friendRepository){
         return args -> {
             greetingRepository.save(new Greeting("Hello"));
             greetingRepository.save(new Greeting("Hi"));
+            friendRepository.save(new Friends("Axel Jeansson", "Valsgärdevägen 10", "0707677207"));
+            friendRepository.save(new Friends("Oscar Jeansson", "Drabantgatan 4C", "0707871773"));
         };
     }
 
@@ -36,9 +38,11 @@ public class DemoApplication {
 @RestController
 class HelloWorldController {
     private final GreetingRepository greetingRepository;
+    private final FriendRepository friendRepository;
 
-    public HelloWorldController(GreetingRepository greetingRepository) {
+    public HelloWorldController(GreetingRepository greetingRepository, FriendRepository friendRepository) {
         this.greetingRepository = greetingRepository;
+        this.friendRepository = friendRepository;
     }
 
     @RequestMapping("/")
@@ -51,6 +55,50 @@ class HelloWorldController {
         return greetingRepository.findAll();
     }
 
+    @GetMapping("/Friends")
+    Iterable<Friends> friends(){
+        return friendRepository.findAll();
+    }
+
+}
+
+@Entity
+class Friends{
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column
+    private String name;
+    @Column
+    private String adress;
+    @Column
+    private String phoneNmbr;
+
+    public Friends() {
+    }
+
+    public Friends(String name, String adress, String phoneNmbr) {
+        this.name = name;
+        this.adress = adress;
+        this.phoneNmbr = phoneNmbr;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public String getPhoneNmbr() {
+        return phoneNmbr;
+    }
 }
 
 @Entity
@@ -82,4 +130,7 @@ class Greeting{
 
 interface GreetingRepository extends CrudRepository<Greeting, Long>{
 
+}
+
+interface FriendRepository extends CrudRepository<Friends, Long>{
 }
