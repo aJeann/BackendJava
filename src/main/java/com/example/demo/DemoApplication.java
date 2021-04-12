@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import jdk.jfr.Frequency;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.List;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -25,7 +27,9 @@ public class DemoApplication {
 
 @RestController
 class HelloWorldController {
+    @Autowired
     private final GreetingRepository greetingRepository;
+    @Autowired
     private final FriendRepository friendRepository;
 
     public HelloWorldController(GreetingRepository greetingRepository, FriendRepository friendRepository) {
@@ -63,7 +67,16 @@ class HelloWorldController {
         friendRepository.deleteById(id);
         return "Friend deleted";
     }
+
+    @GetMapping("Friends/update")
+    public @ResponseBody String updateFriend(@RequestParam Long id, @RequestParam String phoneumber){
+    Friends fInDb = friendRepository.findById(id).get();
+    fInDb.setPhonenumber(phoneumber);
+    friendRepository.save(fInDb);
+    return "Friend updated";
+    }
 }
+
 
 @Entity
 class Friends{
