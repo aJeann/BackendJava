@@ -35,9 +35,9 @@ public class DemoApplication {
     InitializingBean sendDatabase() {
         return () -> {
 
-            friendRepository.save(new Friends("Axel", "Valsgärdevägen10", "0707677207"));
-            friendRepository.save(new Friends("Oscar", "Valsgärdevägen10", "0707871773"));
-            friendRepository.save(new Friends("Katarina", "Valsgärdevägen10", "0704248798"));
+            friendRepository.save(new Friend("Axel", "Valsgärdevägen10", "0707677207"));
+            friendRepository.save(new Friend("Oscar", "Valsgärdevägen10", "0707871773"));
+            friendRepository.save(new Friend("Katarina", "Valsgärdevägen10", "0704248798"));
 
         };
     }
@@ -67,13 +67,13 @@ class HelloWorldController {
     }
 
     @GetMapping("/Friends")
-    Iterable<Friends> friends(){
+    Iterable<Friend> friends(){
         return friendRepository.findAll();
     }
 
     @GetMapping("/Friends/add")
     public @ResponseBody String addNewFriend (@RequestParam String name, @RequestParam String adress, @RequestParam String phonenumber){
-        Friends f = new Friends();
+        Friend f = new Friend();
         f.setName(name);
         f.setAdress(adress);
         f.setPhonenumber(phonenumber);
@@ -89,7 +89,7 @@ class HelloWorldController {
 
     @GetMapping("Friends/update")
     public @ResponseBody String updateFriend(@RequestParam Long id, @RequestParam String phonenumber){
-    Friends fInDb = friendRepository.findById(id).get();
+    Friend fInDb = friendRepository.findById(id).get();
     fInDb.setPhonenumber(phonenumber);
     friendRepository.save(fInDb);
     return "Friend updated";
@@ -98,7 +98,7 @@ class HelloWorldController {
 
 
 @Entity
-class Friends{
+class Friend {
     @Id
     @GeneratedValue
     private Long id;
@@ -110,10 +110,10 @@ class Friends{
     @Column
     private String phonenumber;
 
-    public Friends() {
+    public Friend() {
     }
 
-    public Friends(String name, String adress, String phonenumber) {
+    public Friend(String name, String adress, String phonenumber) {
         this.name = name;
         this.adress = adress;
         this.phonenumber = phonenumber;
@@ -179,6 +179,6 @@ interface GreetingRepository extends CrudRepository<Greeting, Long>{
 
 }
 
-interface FriendRepository extends CrudRepository<Friends, Long>{
+interface FriendRepository extends CrudRepository<Friend, Long>{
 
 }
