@@ -31,6 +31,17 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
     }
 
+    @Bean
+    InitializingBean sendDatabase() {
+        return () -> {
+
+            friendRepository.save(new Friends("Axel", "Valsgärdevägen10", "0707677207"));
+            friendRepository.save(new Friends("Oscar", "Valsgärdevägen10", "0707871773"));
+            friendRepository.save(new Friends("Katarina", "Valsgärdevägen10", "0704248798"));
+
+        };
+    }
+
 }
 
 @RestController
