@@ -17,12 +17,9 @@ import javax.persistence.Id;
 public class DemoApplication {
 
     @Autowired
-    private final GreetingRepository greetingRepository;
-    @Autowired
     private final FriendRepository friendRepository;
 
-    public DemoApplication(GreetingRepository greetingRepository, FriendRepository friendRepository) {
-        this.greetingRepository = greetingRepository;
+    public DemoApplication(FriendRepository friendRepository) {
         this.friendRepository = friendRepository;
     }
 
