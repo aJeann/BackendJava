@@ -1,14 +1,13 @@
 package com.example.demo;
 
+import jdk.jfr.Frequency;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,6 +59,15 @@ class HelloWorldController {
         return friendRepository.findAll();
     }
 
+    @GetMapping("/Friends/add")
+    public @ResponseBody String addNewFriend (@RequestParam String name, @RequestParam String adress, @RequestParam String phonenumber){
+        Friends f = new Friends();
+        f.setName(name);
+        f.setAdress(adress);
+        f.setPhonenumber(phonenumber);
+        friendRepository.save(f);
+        return "Saved";
+    }
 }
 
 @Entity
@@ -73,15 +81,15 @@ class Friends{
     @Column
     private String adress;
     @Column
-    private String phoneNmbr;
+    private String phonenumber;
 
     public Friends() {
     }
 
-    public Friends(String name, String adress, String phoneNmbr) {
+    public Friends(String name, String adress, String phonenumber) {
         this.name = name;
         this.adress = adress;
-        this.phoneNmbr = phoneNmbr;
+        this.phonenumber = phonenumber;
     }
 
     public Long getId() {
@@ -97,7 +105,19 @@ class Friends{
     }
 
     public String getPhoneNmbr() {
-        return phoneNmbr;
+        return phonenumber;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
     }
 }
 
