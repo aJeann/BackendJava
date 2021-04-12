@@ -1,11 +1,9 @@
 package com.example.demo;
 
-import jdk.jfr.Frequency;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.web.bind.annotation.*;
@@ -14,15 +12,25 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.List;
 
 @SpringBootApplication
 public class DemoApplication {
+
+    @Autowired
+    private final GreetingRepository greetingRepository;
+    @Autowired
+    private final FriendRepository friendRepository;
+
+    public DemoApplication(GreetingRepository greetingRepository, FriendRepository friendRepository) {
+        this.greetingRepository = greetingRepository;
+        this.friendRepository = friendRepository;
+    }
 
     public static void main(String[] args) {
 
         SpringApplication.run(DemoApplication.class, args);
     }
+
 }
 
 @RestController
@@ -69,9 +77,9 @@ class HelloWorldController {
     }
 
     @GetMapping("Friends/update")
-    public @ResponseBody String updateFriend(@RequestParam Long id, @RequestParam String phoneumber){
+    public @ResponseBody String updateFriend(@RequestParam Long id, @RequestParam String phonenumber){
     Friends fInDb = friendRepository.findById(id).get();
-    fInDb.setPhonenumber(phoneumber);
+    fInDb.setPhonenumber(phonenumber);
     friendRepository.save(fInDb);
     return "Friend updated";
     }
