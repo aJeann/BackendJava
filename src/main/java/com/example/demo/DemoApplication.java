@@ -16,28 +16,11 @@ import javax.persistence.Id;
 @SpringBootApplication
 public class DemoApplication {
 
-    @Autowired
-    private final FriendRepository friendRepository;
-
-    public DemoApplication(FriendRepository friendRepository) {
-        this.friendRepository = friendRepository;
-    }
-
     public static void main(String[] args) {
 
         SpringApplication.run(DemoApplication.class, args);
     }
 
-    @Bean
-    InitializingBean sendDatabase() {
-        return () -> {
-
-            friendRepository.save(new Friend("Axel", "Valsgärdevägen10", "0707677207"));
-            friendRepository.save(new Friend("Oscar", "Valsgärdevägen10", "0707871773"));
-            friendRepository.save(new Friend("Katarina", "Valsgärdevägen10", "0704248798"));
-
-        };
-    }
 
 }
 
