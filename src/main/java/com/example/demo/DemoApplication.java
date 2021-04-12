@@ -68,6 +68,12 @@ class HelloWorldController {
         friendRepository.save(f);
         return "Saved";
     }
+
+    @GetMapping("Friends/remove")
+    public @ResponseBody String removeFriend(@RequestParam Long id){
+        friendRepository.deleteById(id);
+        return "Friend deleted";
+    }
 }
 
 @Entity
@@ -153,4 +159,5 @@ interface GreetingRepository extends CrudRepository<Greeting, Long>{
 }
 
 interface FriendRepository extends CrudRepository<Friends, Long>{
+
 }
